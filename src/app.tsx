@@ -1,5 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import {getAuthorizeHref} from "./oauthConfig";
+
 
 // async function addSticky() {
 //   const stickyNote = await miro.board.createStickyNote({
@@ -61,10 +63,18 @@ function App() {
   // React.useEffect(() => {
   //   addSticky();
   // }, []);
+  let access_token = localStorage.getItem('spotifyToken');
 
   return (
     <div className="grid wrapper">
       <div className="cs1 ce12">
+
+        <a className="button button-primary"
+           target="_blank"
+           href={getAuthorizeHref()}>
+          LOGIN
+        </a>
+
        <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
        <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
        <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
@@ -73,4 +83,4 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
