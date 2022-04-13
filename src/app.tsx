@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import {getAuthorizeHref} from "./oauthConfig";
+import { getAuthorizeHref } from "./oauthConfig";
 
 
 // async function addSticky() {
@@ -17,11 +17,11 @@ interface IPlayListProps {
 
 async function init() {
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
-  await miro.board.ui.on('drop', async ({x, y, target}) => {
-    let text : string | undefined = undefined
-    if (target.textContent !== null){
+  await miro.board.ui.on('drop', async ({ x, y, target }) => {
+    let text: string | undefined = undefined
+    if (target.textContent !== null) {
       text = target.textContent
-      
+
     }
     let playlistId = target.getAttribute('id')
     if (playlistId !== null){
@@ -31,7 +31,7 @@ async function init() {
 }
 
 
-async function createEmbed(playlistId: string, x: number, y: number){
+async function createEmbed(playlistId: string, x: number, y: number) {
   let url = "https://open.spotify.com/embed/playlist/" + playlistId + "?utm_source=generator"
   const embed = await miro.board.createEmbed({
     url: url,
@@ -46,9 +46,9 @@ async function createEmbed(playlistId: string, x: number, y: number){
   await miro.board.viewport.zoomTo(embed)
 }
 
- 
+
 class Playlist extends React.Component<IPlayListProps>{
-  constructor(props: IPlayListProps){
+  constructor(props: IPlayListProps) {
     super(props)
   }
 
@@ -71,33 +71,54 @@ class Playlist extends React.Component<IPlayListProps>{
 }
 
 
-init(); 
+init();
 
 function App() {
   // React.useEffect(() => {
   //   addSticky();
   // }, []);
   let access_token = localStorage.getItem('spotifyToken');
+  let interval: Timer;
+  const [playlists, setPlaylist] = React.useState<IPlayListProps>([]);
+
+  async function loadPlaylist(token: string) {
+    const playlistsRequest = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+
+    const content = await playlistsRequest.json();
+    console.log(content);
+    const playlst = content.items.filter(i => i.public).map(i => ({ playlistId: i.id }));
+    setPlaylist(playlst);
+  }
+
+  React.useEffect(() => {
+    interval = setInterval(() => {
+      const token = localStorage.getItem('spotifyToken');
+      if (token && token !== "undefined") {
+        clearInterval(interval);
+        loadPlaylist(token);
+      }
+    }, 1000)
+  }, [])
 
   return (
     <div className="grid wrapper">
       <div className="cs1 ce12">
 
         <a className="button button-primary"
-           target="_blank"
-           href={getAuthorizeHref()}>
+          target="_blank"
+          href={getAuthorizeHref()}>
           LOGIN
         </a>
 
-       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
-       <Playlist playlistId="37i9dQZF1DX4UtSsGT1Sbe"/>
-       <Playlist playlistId="37i9dQZF1DWSXBu5naYCM9"/>
-       <Playlist playlistId="37i9dQZF1DXdPec7aLTmlC"/>
-       <Playlist playlistId="37i9dQZEVXbMDoHDwVN2tF"/>
-       <Playlist playlistId="37i9dQZF1DWVTAn6Oz7Zf1"/>
+        {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
       </div>
     </div>
   );
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
