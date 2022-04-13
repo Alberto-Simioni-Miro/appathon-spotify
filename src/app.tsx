@@ -23,7 +23,7 @@ async function init() {
       text = target.textContent
       
     }
-    let playlistId = target.getAttribute('value')
+    let playlistId = target.getAttribute('id')
     if (playlistId !== null){
        createEmbed(playlistId, x, y)
     }
@@ -57,7 +57,16 @@ class Playlist extends React.Component<IPlayListProps>{
   }
 
   render(){
-    return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
+    // return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
+    const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId + "?utm_source=generator"
+
+    return (
+        <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
+          <iframe  className="cs1 ce10" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          <div className='cs11 ce12 icon m2 icon-duplicate'/>
+        </div>
+        )
+      
   }
 }
 
@@ -81,8 +90,11 @@ function App() {
         </a>
 
        <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
-       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
-       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist playlistId="37i9dQZF1DX4UtSsGT1Sbe"/>
+       <Playlist playlistId="37i9dQZF1DWSXBu5naYCM9"/>
+       <Playlist playlistId="37i9dQZF1DXdPec7aLTmlC"/>
+       <Playlist playlistId="37i9dQZEVXbMDoHDwVN2tF"/>
+       <Playlist playlistId="37i9dQZF1DWVTAn6Oz7Zf1"/>
       </div>
     </div>
   );
