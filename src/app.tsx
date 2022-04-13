@@ -58,7 +58,7 @@ class Playlist extends React.Component<IPlayListProps>{
 
   render() {
     // return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
-    const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId + "?utm_source=generator"
+    const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId
 
     return (
       <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
@@ -74,10 +74,6 @@ class Playlist extends React.Component<IPlayListProps>{
 init();
 
 function App() {
-  // React.useEffect(() => {
-  //   addSticky();
-  // }, []);
-  let access_token = localStorage.getItem('spotifyToken');
   let interval: Timer;
   const [playlists, setPlaylist] = React.useState<IPlayListProps[]>([]);
 
