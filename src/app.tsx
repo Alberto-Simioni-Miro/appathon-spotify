@@ -12,7 +12,7 @@ import {getAuthorizeHref} from "./oauthConfig";
 // }
 
 interface IPlayListProps {
-  token: string
+  playlistId: string
 }
 
 async function init() {
@@ -21,24 +21,29 @@ async function init() {
     let text : string | undefined = undefined
     if (target.textContent !== null){
       text = target.textContent
+      
     }
-
-    createEmbed("5830XyzOtYzFxtMJcYfjk7") // todo read value from token
+    let playlistId = target.getAttribute('value')
+    if (playlistId !== null){
+       createEmbed(playlistId, x, y)
+    }
   });
 }
 
 
-async function createEmbed(token: string){
-  let url = "https://open.spotify.com/embed/playlist/" + token + "?utm_source=generator"
-  await miro.board.createEmbed({
+async function createEmbed(playlistId: string, x: number, y: number){
+  let url = "https://open.spotify.com/embed/playlist/" + playlistId + "?utm_source=generator"
+  const embed = await miro.board.createEmbed({
     url: url,
     thumbnailUrl: '',
     mode: 'inline',
     width: 720, // todo coordinates also should be parameters
     height: 720,
-    x: 0,
-    y: 0,
+    x: x,
+    y: y,
   });
+
+  await miro.board.viewport.zoomTo(embed)
 }
 
  
@@ -47,12 +52,12 @@ class Playlist extends React.Component<IPlayListProps>{
     super(props)
   }
 
-  handleClick(token: string) {
-    createEmbed(token)
+  handleClick(playlistId: string) {
+    createEmbed(playlistId, 0, 0)
   }
 
   render(){
-    return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.token)}> Add Spotify</button>
+    return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
   }
 }
 
@@ -75,9 +80,9 @@ function App() {
           LOGIN
         </a>
 
-       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
-       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
-       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist playlistId="5830XyzOtYzFxtMJcYfjk7"/>
       </div>
     </div>
   );
