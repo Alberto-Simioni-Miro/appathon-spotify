@@ -24,8 +24,8 @@ async function init() {
 
     }
     let playlistId = target.getAttribute('id')
-    if (playlistId !== null){
-       createEmbed(playlistId, x, y)
+    if (playlistId !== null) {
+      createEmbed(playlistId, x, y)
     }
   });
 }
@@ -56,17 +56,17 @@ class Playlist extends React.Component<IPlayListProps>{
     createEmbed(playlistId, 0, 0)
   }
 
-  render(){
+  render() {
     // return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
     const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId + "?utm_source=generator"
 
     return (
-        <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
-          <iframe  className="cs1 ce10" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-          <div className='cs11 ce12 icon m2 icon-duplicate'/>
-        </div>
-        )
-      
+      <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
+        <iframe className="cs1 ce10" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div className='cs11 ce12 icon m2 icon-duplicate' />
+      </div>
+    )
+
   }
 }
 
@@ -79,7 +79,7 @@ function App() {
   // }, []);
   let access_token = localStorage.getItem('spotifyToken');
   let interval: Timer;
-  const [playlists, setPlaylist] = React.useState<IPlayListProps>([]);
+  const [playlists, setPlaylist] = React.useState<IPlayListProps[]>([]);
 
   async function loadPlaylist(token: string) {
     const playlistsRequest = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
@@ -109,11 +109,13 @@ function App() {
     <div className="grid wrapper">
       <div className="cs1 ce12">
 
-        <a className="button button-primary"
-          target="_blank"
-          href={getAuthorizeHref()}>
-          LOGIN
-        </a>
+        {(!playlists || !playlists.length) && (
+          <a className="button button-primary"
+            target="_blank"
+            href={getAuthorizeHref()}>
+            LOGIN
+          </a>
+        )}
 
         {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
       </div>
