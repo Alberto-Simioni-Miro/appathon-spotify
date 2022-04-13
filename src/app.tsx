@@ -9,6 +9,10 @@ import ReactDOM from 'react-dom';
 //   await miro.board.viewport.zoomTo(stickyNote);
 // }
 
+interface IPlayListProps {
+  token: string
+}
+
 async function init() {
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
   await miro.board.ui.on('drop', async ({x, y, target}) => {
@@ -17,21 +21,37 @@ async function init() {
       text = target.textContent
     }
 
-    addPlaylistToBoard()
+    createEmbed("5830XyzOtYzFxtMJcYfjk7") // todo read value from token
   });
 }
 
 
-async function addPlaylistToBoard(){
+async function createEmbed(token: string){
+  let url = "https://open.spotify.com/embed/playlist/" + token + "?utm_source=generator"
   await miro.board.createEmbed({
-    url: 'https://open.spotify.com/embed/playlist/5830XyzOtYzFxtMJcYfjk7?utm_source=generator',
+    url: url,
     thumbnailUrl: '',
     mode: 'inline',
-    width: 720,
+    width: 720, // todo coordinates also should be parameters
     height: 720,
     x: 0,
     y: 0,
   });
+}
+
+ 
+class Playlist extends React.Component<IPlayListProps>{
+  constructor(props: IPlayListProps){
+    super(props)
+  }
+
+  handleClick(token: string) {
+    createEmbed(token)
+  }
+
+  render(){
+    return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.token)}> Add Spotify</button>
+  }
 }
 
 
@@ -42,18 +62,12 @@ function App() {
   //   addSticky();
   // }, []);
 
-  
-
   return (
     <div className="grid wrapper">
       <div className="cs1 ce12">
-        <a
-          className="button button-primary miro-draggable"
-          href="#"
-          onClick={addPlaylistToBoard}
-        >
-          Add Spotify
-        </a>
+       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
+       <Playlist token="5830XyzOtYzFxtMJcYfjk7"/>
       </div>
     </div>
   );
