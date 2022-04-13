@@ -14,26 +14,27 @@ function App() {
     addSticky();
   }, []);
 
+  const addEmbeddedSpotify = async () => {
+    await miro.board.createEmbed({
+      url: 'https://open.spotify.com/embed/playlist/5830XyzOtYzFxtMJcYfjk7?utm_source=generator',
+      thumbnailUrl: '',
+      mode: 'inline',
+      width: 720,
+      height: 720,
+      x: 0,
+      y: 0,
+    });
+  }
+
   return (
     <div className="grid wrapper">
       <div className="cs1 ce12">
-        <img src="/src/assets/congratulations.png" alt="" />
-      </div>
-      <div className="cs1 ce12">
-        <h1>Congratulations!</h1>
-        <p>You've just created your first Miro app!</p>
-        <p>
-          To explore more and build your own app, see the Miro Developer
-          Platform documentation.
-        </p>
-      </div>
-      <div className="cs1 ce12">
         <a
           className="button button-primary"
-          target="_blank"
-          href="https://beta.developers.miro.com"
+          href="#"
+          onClick={addEmbeddedSpotify}
         >
-          Read the documentation
+          Add Spotify
         </a>
       </div>
     </div>
