@@ -91,8 +91,8 @@ function App() {
 
     const content = await playlistsRequest.json();
     console.log(content);
-    const playlst = content.items.filter(i => i.public).map(i => ({ playlistId: i.id }));
-    setPlaylist(playlst);
+    const playlst = content.items.map(i => ({ playlistId: i.id }));
+    setPlaylist(playlst.slice(0, 8));
   }
 
   React.useEffect(() => {
