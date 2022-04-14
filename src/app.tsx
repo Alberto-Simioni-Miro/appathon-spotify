@@ -107,6 +107,14 @@ function App() {
 
         {(!playlists || !playlists.length) && (
           <a className="button button-primary"
+            style={{
+              backgroundColor: "#1DB954",
+              borderColor: "#1DB954",
+              borderRadius: '500px',
+              minHeight: '48px',
+              lineHeight: '1.8',
+              fontWeight: 700
+            }}
             target="_blank"
             href={getAuthorizeHref()}>
             LOGIN
