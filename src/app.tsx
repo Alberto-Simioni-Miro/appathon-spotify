@@ -1,16 +1,10 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { getAuthorizeHref } from "./oauthConfig";
-import SpotifyPlayer from 'react-spotify-web-playback';
 
 interface IPlayListProps {
   playlistId: string
 }
-
-// interface ISpotifyToken {
-//   token: string
-// }
-
 async function init() {
 
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
@@ -54,7 +48,6 @@ class Playlist extends React.Component<IPlayListProps>{
   }
 
   render() {
-    // return <button className="button button-primary miro-draggable" onClick={(_) => this.handleClick(this.props.playlistId)} value={this.props.playlistId} > Add Spotify</button>
     const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId
 
     return (
@@ -119,8 +112,6 @@ function App() {
     }
   }
 
-  
-
   React.useEffect(() => {
     interval = setInterval(() => {
       const token = localStorage.getItem('spotifyToken');
@@ -157,12 +148,7 @@ function App() {
             <input className="input iconSearch" type="text" placeholder="Search Playlist" onChange={handleChange}/>
           </div>
         )}
-        {/* <SpotifyPlayer
-              name="Miro Board"
-              token={token}
-              uris={['spotify:playlist:37i9dQZF1DXbYM3nMM0oPk']}
-            /> */}
-            
+
         {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
       </div>
     </div>
