@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as deepmerge from 'deepmerge';
 import ReactDOM from 'react-dom';
 import { getAuthorizeHref } from "./oauthConfig";
 import SpotifyPlayer from 'react-spotify-web-playback';
