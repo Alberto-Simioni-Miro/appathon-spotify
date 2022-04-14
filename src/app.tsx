@@ -3,17 +3,13 @@ import ReactDOM from 'react-dom';
 import { getAuthorizeHref } from "./oauthConfig";
 
 
-// async function addSticky() {
-//   const stickyNote = await miro.board.createStickyNote({
-//     content: 'Hello, World!',
-//   });
-
-//   await miro.board.viewport.zoomTo(stickyNote);
-// }
-
 interface IPlayListProps {
   playlistId: string
 }
+
+// interface ISpotifyToken {
+//   token: string
+// }
 
 async function init() {
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
@@ -37,7 +33,7 @@ async function createEmbed(playlistId: string, x: number, y: number) {
     url: url,
     thumbnailUrl: '',
     mode: 'inline',
-    width: 720, // todo coordinates also should be parameters
+    width: 720,
     height: 720,
     x: x,
     y: y,
@@ -63,7 +59,7 @@ class Playlist extends React.Component<IPlayListProps>{
     return (
       <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
         <iframe className="cs1 ce10" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div className='cs11 ce12 icon m2 icon-duplicate' />
+        <div className='cs11 ce12 icon m2 icon-duplicate' onClick={(_) => this.handleClick(this.props.playlistId)} />
       </div>
     )
 
@@ -76,8 +72,9 @@ init();
 function App() {
   let interval: Timer;
   const [playlists, setPlaylist] = React.useState<IPlayListProps[]>([]);
+  const [token, setToken] = React.useState("");
 
-  async function loadPlaylist(token: string) {
+  async function loadPlaylist(token: string | null) {
     const playlistsRequest = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -91,10 +88,38 @@ function App() {
     setPlaylist(playlst.slice(0, 8));
   }
 
+  async function searchPlaylist(queryText: string, token: string | null) {
+    
+    const playlistsRequest = await fetch('https://api.spotify.com/v1/search?limit=50&type=playlist&q=' + queryText, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    });
+
+    const content = await playlistsRequest.json();
+    console.log(content);
+    const playlst = content.playlists.items.map(i => ({ playlistId: i.id }));
+    setPlaylist(playlst.slice(0, 8));
+  }
+
+  async function handleChange(event){
+    const token = localStorage.getItem('spotifyToken');
+    const value = event.target.value;
+    if(value) {
+      searchPlaylist(value, token)
+    } else {
+      loadPlaylist(token)
+    }
+  }
+
+  
+
   React.useEffect(() => {
     interval = setInterval(() => {
       const token = localStorage.getItem('spotifyToken');
       if (token && token !== "undefined") {
+        setToken(token);
         clearInterval(interval);
         loadPlaylist(token);
       }
@@ -120,7 +145,11 @@ function App() {
             LOGIN
           </a>
         )}
-
+        {token && (
+          <div className="form-group">
+            <input className="input" type="text" placeholder="Enter something" onChange={handleChange}/>
+          </div>
+        )}
         {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
       </div>
     </div>
