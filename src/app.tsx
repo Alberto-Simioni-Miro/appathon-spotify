@@ -13,7 +13,6 @@ interface IPlayListProps {
 // }
 
 async function init() {
-  var x = deepmerge({}, {}, {})
 
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
   await miro.board.ui.on('drop', async ({ x, y, target }) => {
