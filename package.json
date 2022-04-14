@@ -8,9 +8,11 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "is-mergeable-object": "^1.1.1",
+    "mirotone": "2.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "mirotone": "2.0.5"
+    "react-spotify-web-playback": "^0.9.1"
   },
   "devDependencies": {
     "@mirohq/websdk-types": "latest",

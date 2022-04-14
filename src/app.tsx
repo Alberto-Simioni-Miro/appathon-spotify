@@ -1,7 +1,8 @@
 import * as React from 'react';
+import * as deepmerge from 'deepmerge';
 import ReactDOM from 'react-dom';
 import { getAuthorizeHref } from "./oauthConfig";
-
+import SpotifyPlayer from 'react-spotify-web-playback';
 
 interface IPlayListProps {
   playlistId: string
@@ -12,6 +13,8 @@ interface IPlayListProps {
 // }
 
 async function init() {
+  var x = deepmerge({}, {}, {})
+
   // Enable the 'drop' event on the app panel. Active on 'miro-draggable' HTML elements
   await miro.board.ui.on('drop', async ({ x, y, target }) => {
     let text: string | undefined = undefined
@@ -84,7 +87,6 @@ function App() {
     const playlistsRequest = await fetch('https://api.spotify.com/v1/me/playlists?limit=50', {
       headers: {
         'Authorization': `Bearer ${token}`
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       }
     });
 
@@ -125,8 +127,8 @@ function App() {
     interval = setInterval(() => {
       const token = localStorage.getItem('spotifyToken');
       if (token && token !== "undefined") {
-        setToken(token);
         clearInterval(interval);
+        setToken(token)
         loadPlaylist(token);
       }
     }, 1000)
@@ -134,6 +136,16 @@ function App() {
 
   return (
     <div className="grid wrapper">
+      <div className='cs1 ce12'>
+        {token &&
+          <SpotifyPlayer
+              name="Miro Board"
+              token={token}
+              uris={['spotify:playlist:37i9dQZF1DXbYM3nMM0oPk']}
+            />
+        }
+      </div>
+
       <div className="cs1 ce12">
 
         {(!playlists || !playlists.length) && (

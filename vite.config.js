@@ -21,4 +21,9 @@ module.exports = defineConfig({
     },
   },
   plugins: [reactRefresh()],
+  resolve: {
+    alias: {
+      '@gilbarbara/react-range-slider': './src/lib/react-range-slider/index.tsx'
+    }
+  }
 });
