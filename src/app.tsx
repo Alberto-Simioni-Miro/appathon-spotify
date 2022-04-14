@@ -156,8 +156,8 @@ function App() {
               lineHeight: '1.8',
               fontWeight: 700
             }}
-            target="_blank"
-            href={getAuthorizeHref()}>
+            onClick={() => window.open(getAuthorizeHref(),"popup","width=600,height=600")}
+            rel="noopener">
             LOGIN
           </a>
         )}
