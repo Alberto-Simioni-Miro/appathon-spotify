@@ -165,7 +165,8 @@ function App() {
         )}
         {token && (
           <div className="form-group">
-            <input className="input" type="text" placeholder="Enter something" onChange={handleChange}/>
+            <div className="playlist-div"> Drag &amp; Drop a playlist to the board</div>
+            <input className="input iconSearch" type="text" placeholder="Search Playlist" onChange={handleChange}/>
           </div>
         )}
         {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
