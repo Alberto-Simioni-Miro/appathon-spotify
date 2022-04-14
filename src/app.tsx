@@ -134,16 +134,6 @@ function App() {
 
   return (
     <div className="grid wrapper">
-      <div className='cs1 ce12'>
-        {token &&
-          <SpotifyPlayer
-              name="Miro Board"
-              token={token}
-              uris={['spotify:playlist:37i9dQZF1DXbYM3nMM0oPk']}
-            />
-        }
-      </div>
-
       <div className="cs1 ce12">
 
         {(!playlists || !playlists.length) && (
@@ -167,6 +157,12 @@ function App() {
             <input className="input iconSearch" type="text" placeholder="Search Playlist" onChange={handleChange}/>
           </div>
         )}
+        {/* <SpotifyPlayer
+              name="Miro Board"
+              token={token}
+              uris={['spotify:playlist:37i9dQZF1DXbYM3nMM0oPk']}
+            /> */}
+            
         {playlists && playlists.map(p => (<Playlist key={p.playlistId} playlistId={p.playlistId} />))}
       </div>
     </div>
