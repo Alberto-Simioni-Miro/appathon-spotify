@@ -57,9 +57,15 @@ class Playlist extends React.Component<IPlayListProps>{
     const iframeSrc = "https://open.spotify.com/embed/playlist/" + this.props.playlistId
 
     return (
-      <div className='miro-draggable grid playlist-div' id={this.props.playlistId}>
-        <iframe className="cs1 ce10" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <div className='cs11 ce12 icon m2 icon-duplicate' onClick={(_) => this.handleClick(this.props.playlistId)} />
+      <div className='miro-draggable grid playlist-div' id={this.props.playlistId} style={{ position: "relative" }}>
+        <iframe className="cs1 ce12" src={iframeSrc} width="100%" height="80" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <div className="cover-panel"  onDoubleClick={(_) => this.handleClick(this.props.playlistId)} style={{
+          position: 'absolute',
+          width: '220px',
+          height: '80px',
+          right: 0,
+          top: 0
+        }} />
       </div>
     )
 
