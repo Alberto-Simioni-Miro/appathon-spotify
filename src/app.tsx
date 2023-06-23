@@ -26,7 +26,6 @@ async function createEmbed(playlistId: string, x: number, y: number) {
   let url = "https://open.spotify.com/embed/playlist/" + playlistId + "?utm_source=generator"
   const embed = await miro.board.createEmbed({
     url: url,
-    thumbnailUrl: '',
     mode: 'inline',
     width: 720,
     height: 720,
